@@ -8,8 +8,8 @@ from mgm.src.MicroCorpus import MicroCorpus
 import os
 import warnings
 from transformers import (
-    BertForMaskedLM,
-    BertConfig,
+    GPT2LMHeadModel,
+    GPT2Config,
     Trainer,
     TrainingArguments,
     DataCollatorForLanguageModeling,
@@ -26,22 +26,19 @@ def pretrain(cfg, args):
     # set model
 
     config = {
-        "hidden_size": cfg.getint('Bert', 'hidden_size'),
-        "num_hidden_layers": cfg.getint('Bert', 'num_hidden_layers'),
-        "initializer_range": cfg.getfloat('Bert', 'initializer_range'),
-        "layer_norm_eps": cfg.getfloat('Bert', 'layer_norm_eps'),
-        "attention_probs_dropout_prob": cfg.getfloat('Bert', 'attention_probs_dropout_prob'),
-        "hidden_dropout_prob": cfg.getfloat('Bert', 'hidden_dropout_prob'),
-        "intermediate_size": cfg.getint('Bert', 'intermediate_size'),
-        "hidden_act": cfg.get('Bert', 'hidden_act'),
-        "max_position_embeddings": cfg.getint('Bert', 'max_position_embeddings'),
-        "model_type": cfg.get('Bert', 'model_type'),
-        "num_attention_heads": cfg.getint('Bert', 'num_attention_heads'),
-        "pad_token_id": tokenizer.pad_token_id,
-        "vocab_size": tokenizer.vocab_size,
+        'model_type':cfg.get('GPT2', 'model_type'),
+        'vocab_size':tokenizer.vocab_size,
+        'n_positions':cfg.getint('GPT2', 'n_positions'),
+        'n_embd': cfg.getint('GPT2', 'n_embd'),
+        'n_layer': cfg.getint('GPT2', 'n_layer'),
+        'n_head': cfg.getint('GPT2', 'n_head'),
+        'bos_token_id':tokenizer.bos_token_id,
+        'eos_token_id':tokenizer.eos_token_id,
+        'pad_token_id':tokenizer.pad_token_id,
     }
+    
 
-    config = BertConfig(**config)
+    config = GPT2Config(**config)
     
     training_args = {
     "learning_rate": cfg.getfloat('pretrain', 'learning_rate'),
@@ -73,13 +70,13 @@ def pretrain(cfg, args):
     )
 
     # set a new model when mask rate changes
-    model = BertForMaskedLM(config)
+    model = GPT2LMHeadModel(config)
     model = model.train()
     
     split = args.val_split
 
     train_set, val_set = random_split(
-        corpus, [int(len(corpus) * (1 - split)), len(corpus) - int(len(corpus) * (1 - split))]
+        corpus, [1-split, split]
     )
 
     callbacks = [EarlyStoppingCallback(early_stopping_patience=3)]

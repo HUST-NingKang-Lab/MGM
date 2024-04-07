@@ -14,7 +14,7 @@ class MicroTokenizer(PreTrainedTokenizer):
         self.toks = toks
         self.vocab = {v: i for i, v in enumerate(self.toks)}
         self.ids_to_tokens = {i: v for i, v in enumerate(self.toks)}
-        self.add_special_tokens({'pad_token': '<pad>', 'mask_token': '<mask>'})
+        self.add_special_tokens({'pad_token': '<pad>', 'mask_token': '<mask>', 'bos_token': '<bos>', 'eos_token': '<eos>'})
     
     def _tokenize(self, text):
         return list(text)
@@ -62,10 +62,9 @@ class MicroCorpus(Dataset):
         self.phylogeny = pd.read_csv(phylogeny_path, index_col=0)
         self.max_len = max_len
         
-        self.data = self._preprocess(self.data, preprocess)
-            
-        self.zero_values = self.data.min(axis=0)
-        
+        # add all zero row to save zero values
+        self.data, self.zero_values = self._preprocess(self.data, preprocess)
+    
         # convert to token
         tokens_list = []
         length_list = []
@@ -97,9 +96,15 @@ class MicroCorpus(Dataset):
         # set zero values to zero
         sample = sample[sample > self.zero_values]
         sample = sample.sort_values(ascending=False)
+        sent = sample.index.tolist()
+        # add bos
+        sent = ['<bos>'] + sent
+        # add eos
+        sent = sent + ['<eos>']
+        
 
         # convert to token
-        tokens = self.tokenizer.encode(sample.index.tolist())
+        tokens = self.tokenizer.encode(sent)
         length = len(tokens)
         
         # padding and truncate
@@ -123,12 +128,31 @@ class MicroCorpus(Dataset):
         data = data.loc[(data != 0).any(axis=1)]
         print(f'{before - data.shape[0]} samples are dropped for all zeroes')
         if not preprocess:
-            return data
+            return data, data.min(0)
         # relative abundance
         data = data.div(data.sum(axis=1), axis=0)
         # normalize
+        data.loc['zero'] = 0 # save zero values
         data = (data - self.phylogeny['mean']) / self.phylogeny['std']
-        return data
+        zero_values = data.loc['zero']
+        data = data.drop('zero')
+        return data, zero_values
+    
+class SequenceClassificationDataset(Dataset):
+    def __init__(self, seq, mask, labels):
+        self.seq = seq
+        self.mask = mask
+        self.labels = labels
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, idx):
+        return {
+            "input_ids": torch.tensor(self.seq[idx]),
+            "attention_mask": torch.tensor(self.mask[idx]),
+            "labels": torch.tensor(self.labels[idx])
+        }
     
 class SequenceClassificationDataset(Dataset):
     def __init__(self, seq, mask, labels):

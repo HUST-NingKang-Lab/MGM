@@ -9,7 +9,7 @@ from mgm.src.MicroCorpus import (
 from mgm.src.utils import eval_and_save
 
 import torch
-from transformers import Trainer, BertForSequenceClassification
+from transformers import Trainer, GPT2ForSequenceClassification
 from pickle import load, dump
         
 def predict(cfg, args):
@@ -45,7 +45,7 @@ def predict(cfg, args):
             corpus[:]["input_ids"], corpus[:]["attention_mask"], labels
         )
 
-    model = BertForSequenceClassification.from_pretrained(args.model, num_labels=len(le.categories_[0]))
+    model = GPT2ForSequenceClassification.from_pretrained(args.model, num_labels=len(le.categories_[0]))
     model.eval()
     trainer = Trainer(model=model)
     

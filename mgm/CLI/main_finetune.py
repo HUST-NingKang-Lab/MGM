@@ -13,7 +13,7 @@ from mgm.src.MicroCorpus import (
 from pickle import load, dump
 from sklearn.preprocessing import OneHotEncoder
 from transformers import (
-    BertForSequenceClassification,
+    GPT2ForSequenceClassification,
     Trainer,
     TrainingArguments,
 )
@@ -43,7 +43,7 @@ def finetune(cfg, args):
     )
 
     # set model config
-    model = BertForSequenceClassification.from_pretrained(args.model, num_labels=len(le.categories_[0]))
+    model = GPT2ForSequenceClassification.from_pretrained(args.model, num_labels=len(le.categories_[0]))
     
     # set training args
     training_args = {

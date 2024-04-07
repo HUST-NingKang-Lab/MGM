@@ -29,7 +29,7 @@ mgm construct -i infant_data/abundance.csv -o infant_corpus.pkl
 ```
 if you provide a hdf5 file, you need to specify the key of the input file using `-k` option. The default key is `genus`.
 
-- `pretrain`: Pretrain the MGM model using the microbiome corpus followed BERT style. Input: corpus constructed by `construct` mode, Output: pretrained MGM model.
+- `pretrain`: Pretrain the MGM model using the microbiome corpus followed GPT style. Input: corpus constructed by `construct` mode, Output: pretrained MGM model.
 
 e.g.:
 
