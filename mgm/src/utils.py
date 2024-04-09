@@ -7,6 +7,21 @@ import os
 import pickle
 from mgm.src.MicroCorpus import MicroTokenizer, MicroCorpus
 
+def seed_everything(seed: int):
+    import random, os
+    import numpy as np
+    import torch
+    
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = True
+    
+seed_everything(42)
+
 def eval_and_save(y_score, y_true, label_names, save_dir, activation="softmax"):
     if activation == "sigmoid":
         y_score = nn.Sigmoid()(torch.tensor(y_score)).numpy()

@@ -1,5 +1,6 @@
 from mgm.CLI.CLI_utils import get_CLI_parser, get_CFG_reader
 from mgm.src.MicroCorpus import MicroCorpus, MicroTokenizer
+from mgm.src.utils import seed_everything
 import sys
 import warnings
 
@@ -9,7 +10,13 @@ def main():
     parser = get_CLI_parser()
     args = parser.parse_args()
     cfg = get_CFG_reader(args.config)
-    # set_seed(args.seed)
+    
+    if args.seed is not None:
+        print(f"Setting seed to {args.seed}")
+        seed_everything(args.seed)
+    else:
+        print("No seed provided, the program will generate a random seed.")
+        
     if args.mode == 'construct':
         from mgm.CLI.main_construct import construct
         construct(cfg, args)

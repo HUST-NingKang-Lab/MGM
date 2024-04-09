@@ -49,6 +49,8 @@ def get_CLI_parser():
                        help='The fraction of validation samples.')
     parser.add_argument('-H', '--log', type=str, default='MGM_log',
                        help='The path to store training history of MGM model.')
+    parser.add_argument('--seed', type=int, default=None,
+                        help='The random seed for reproducibility. If not provided, a random seed will be generated.')
 
     # ------------------------------------------------------------------------------------------------------------------
     construct = parser.add_argument_group(
