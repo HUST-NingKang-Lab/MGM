@@ -116,9 +116,11 @@ class MicroCorpus(Dataset):
         return tokens, length
     
     def _preprocess(self, data, preprocess):
-        data.columns = data.columns.str.replace('; ', ';', regex=False) # remove space after ;
-        data.columns = data.columns.str.replace(';s__.*', '', regex=True) # drop species level
-        data.columns = data.columns.str.replace('^k__', 'sk__', regex=True) # if start with k__, replace with sk__
+        # data.columns = data.columns.str.replace('; ', ';', regex=False) # remove space after ;
+        # data.columns = data.columns.str.replace(';s__.*', '', regex=True) # drop species level
+        # data.columns = data.columns.str.replace('^k__', 'sk__', regex=True) # if start with k__, replace with sk__
+        # extract 'g__XXX' in the column names
+        data.columns = data.columns.str.extract(r'(g__[A-Za-z0-9_]+)').squeeze()
         data = data.groupby(data.columns, axis=1).sum()
         before = data.shape[0]
         # only keep genus in phylogeny
@@ -154,22 +156,6 @@ class SequenceClassificationDataset(Dataset):
             "labels": torch.tensor(self.labels[idx])
         }
     
-class SequenceClassificationDataset(Dataset):
-    def __init__(self, seq, mask, labels):
-        self.seq = seq
-        self.mask = mask
-        self.labels = labels
-
-    def __len__(self):
-        return len(self.labels)
-
-    def __getitem__(self, idx):
-        return {
-            "input_ids": torch.tensor(self.seq[idx]),
-            "attention_mask": torch.tensor(self.mask[idx]),
-            "labels": torch.tensor(self.labels[idx])
-        }
-
 if __name__ == '__main__':
     # create MicroCorpus using MGnify data
     special_toks = ['<pad>', '<mask>']
