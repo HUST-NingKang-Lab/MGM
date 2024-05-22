@@ -63,8 +63,13 @@ def get_CLI_parser():
                            help='Do not normalize the countmatrix if you have already normalized it by your own approach.')
     # ------------------------------------------------------------------------------------------------------------------
     pretrain = parser.add_argument_group(
-        title = 'pretrain', description='Pretrain the MGM model using the microbiome corpus followed BERT style.\n'
-                                        'Input: the microbiome corpus, Output: pretrained MGM model.')
+        title = 'pretrain', description='Pretrain the MGM model using the microbiome corpus followed GPT style.\n'
+                                        'Input: the microbiome corpus, Output: pretrained MGM model')
+    pretrain.add_argument('--with-label', action='store_true', default=False,
+                          help='if the label file is provided, the label token will be added following the <bos> token. \n'
+                                'The tokenizer will be updated to include the label token and the embedding layer will be updated to include the label embedding.')
+    pretrain.add_argument('--from-scratch', action='store_true', default=False,
+                        help='Whether to train the model from scratch. Default is False.')
     # ------------------------------------------------------------------------------------------------------------------
 
     train = parser.add_argument_group(
@@ -85,5 +90,13 @@ def get_CLI_parser():
                                       'Input: corpus in pkl file, model file, output: prediction results')
     predict.add_argument('-E', '--evaluate', action='store_true', default=False,
                         help='Whether to evaluate the prediction results.')
-        
+    
+    # ------------------------------------------------------------------------------------------------------------------
+    generate = parser.add_argument_group(
+        title='generate', description='Generate synthetic microbiome data using the pretrained model.\n'
+                                        'Input: the pretrained model, Output: synthetic microbiome data.')
+    generate.add_argument('-n', '--num-samples', type=int, default=10,
+                          help='The number of samples to generate.')
+    generate.add_argument('-p', '--prompt', type=str, default=None,
+                          help='The prompt file in txt format. Each line is a label for the model to generate samples.')
     return parser

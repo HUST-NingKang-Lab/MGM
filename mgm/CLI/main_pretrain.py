@@ -1,9 +1,9 @@
 import torch
 from torch.utils.data import random_split
 import pandas as pd
-from pickle import load
+from pickle import load, dump
 from mgm.src.MicroCorpus import MicroTokenizer
-from mgm.src.MicroCorpus import MicroCorpus
+from mgm.src.MicroCorpus import MicroCorpus, MicroCorpusWithLabelTokens
 
 import os
 import warnings
@@ -64,13 +64,35 @@ def pretrain(cfg, args):
     
     training_args = TrainingArguments(**training_args)
     
+    if args.with_label:
+        if args.labels is None:
+            raise ValueError("Please provide labels for pretraining.")
+        metadata = pd.read_csv(args.labels, index_col=0)
+        metadata = metadata.loc[corpus.data.index]
+        tokens = corpus.tokens
+        extend_words = metadata.iloc[:, 0].unique().tolist()
+        tokenizer.add_tokens(extend_words)
+        os.makedirs(args.output, exist_ok=True)
+        dump(tokenizer, open(f'{args.output}/tokenizer.pkl', 'wb'))
+        corpus = MicroCorpusWithLabelTokens(tokens, 
+                                             metadata.iloc[:, 0].values.tolist(),
+                                             tokenizer)
+        
     print(f"Start training...")
     data_collator = DataCollatorForLanguageModeling(
-        tokenizer=tokenizer, mlm_probability=0.15
+        tokenizer=tokenizer, mlm=False
     )
 
-    # set a new model when mask rate changes
-    model = GPT2LMHeadModel(config)
+    if args.from_scratch:
+        model = GPT2LMHeadModel(config)
+        print("Training from scratch.")
+    else:
+        model = GPT2LMHeadModel.from_pretrained(args.model)
+    
+    if args.with_label:
+        model.resize_token_embeddings(len(tokenizer))
+        print("Update the embedding layer to include the label embedding.")
+
     model = model.train()
     
     split = args.val_split

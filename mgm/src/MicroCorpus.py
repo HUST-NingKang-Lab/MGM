@@ -19,6 +19,11 @@ class MicroTokenizer(PreTrainedTokenizer):
     def _tokenize(self, text):
         return list(text)
     
+    def _add_tokens(self, new_tokens: List[str], special_tokens: bool = False) -> int:
+        self.toks.extend(new_tokens)
+        self.vocab = {v: i for i, v in enumerate(self.toks)}
+        self.ids_to_tokens = {i: v for i, v in enumerate(self.toks)}
+    
     def _convert_token_to_id(self, token):
         return self.vocab[token]
     
@@ -155,6 +160,25 @@ class SequenceClassificationDataset(Dataset):
             "attention_mask": torch.tensor(self.mask[idx]),
             "labels": torch.tensor(self.labels[idx])
         }
+        
+class MicroCorpusWithLabelTokens(Dataset):
+    def __init__(self, tokens, labels, tokenizer):
+        self.tokens = tokens
+        self.tokenizer = tokenizer
+        self.labels = torch.tensor(self.tokenizer.encode(labels)).view(-1, 1)
+        # insert label tokens after <bos> 
+        self.tokens = torch.cat((self.tokens[:, :1], self.labels, self.tokens[:, 1:-1]), dim=1)
+        
+    def __len__(self):
+        return self.tokens.shape[0]
+    
+    def __getitem__(self, idx):
+        attention_mask = torch.ones(self.tokens[idx].shape)
+        attention_mask[self.tokens[idx] == self.tokenizer.pad_token_id] = 0
+        tokens = self.tokens[idx].clone()
+
+        return {'input_ids': torch.tensor(tokens),
+                'attention_mask': attention_mask}
     
 if __name__ == '__main__':
     # create MicroCorpus using MGnify data

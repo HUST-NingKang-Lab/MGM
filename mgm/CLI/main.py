@@ -7,6 +7,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 def main():
+    print("Starting MGM...")
     parser = get_CLI_parser()
     args = parser.parse_args()
     cfg = get_CFG_reader(args.config)
@@ -36,6 +37,10 @@ def main():
     elif args.mode == 'predict':
         from mgm.CLI.main_predict import predict
         predict(cfg, args)
+        sys.exit(0)
+    elif args.mode == 'generate':
+        from mgm.CLI.main_generate import generate
+        generate(cfg, args)
         sys.exit(0)
     else:
         raise RuntimeError('Please specify correct work mode, see `--help`.')

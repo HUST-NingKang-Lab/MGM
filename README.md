@@ -29,12 +29,14 @@ mgm construct -i infant_data/abundance.csv -o infant_corpus.pkl
 ```
 if you provide a hdf5 file, you need to specify the key of the input file using `-k` option. The default key is `genus`.
 
-- `pretrain`: Pretrain the MGM model using the microbiome corpus followed GPT style. Input: corpus constructed by `construct` mode, Output: pretrained MGM model.
-
+- `pretrain`: Pretrain the MGM model using the microbiome corpus followed GPT style. Input: corpus constructed by `construct` mode, Output: pretrained MGM model. 
+You can also train the generator by providing the label file in csv format with the first column as sample names, second column as labels. If you want to train the generator, you need to specify the generator model using `--with-label` option. The label tokens will be concatenated at the start of each sentence.
+By default, the pretrained model will load the pretrained weights from the general MGM model. If you want to train the model from scratch, you can use `--from-scratch` option.
 e.g.:
 
 ```bash
 mgm pretrain -i infant_corpus.pkl -o infant_model
+mgm pretrain -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -o infant_model_gen --with-label    # train the generator
 ```
 
 - `train`: Train supervised MGM model without mask pretrained weights. A microbiome corpus and properly labeled data must be provided. Label file should be in csv format, with the first column as sample names, second column as labels. Input: corpus constructed by `construct` mode. label file in csv format with the first column as sample names, second column as labels. Output: supervised MGM model.
@@ -59,6 +61,15 @@ e.g.:
 
 ```bash
 mgm predict -E -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -m infant_model_clf -o infant_prediction.csv
+```
+
+- `generate`: Generate synthetic microbiome data using the pretrained MGM model. A prompt file in `txt` format using `-p` is required if you want to generate samples with specific labels. You can specify the number of samples to generate using `-n` option. The generated tensor will be saved in pickle format. Input: pretrained MGM model. Output: synthetic microbiome data in pickle format.
+
+e.g.:
+
+```bash
+mgm generate -m infant_model_clf -p infant_data/prompt.txt -n 100 -o infant_synthetic.pkl
+
 ```
 
 For more detailed usage, please refer to the help message of each mode:

@@ -19,8 +19,6 @@ def seed_everything(seed: int):
     torch.cuda.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
-    
-seed_everything(42)
 
 def eval_and_save(y_score, y_true, label_names, save_dir, activation="softmax"):
     if activation == "sigmoid":
@@ -45,3 +43,22 @@ class CustomUnpickler(pickle.Unpickler):
         if name == 'MicroTokenizer':
             return MicroTokenizer
         return super().find_class(module, name)
+
+def generate(sent, model, do_sample=True, bad_words_ids=None, num_return_sequences=100):
+    sent = sent.to(model.device)
+    gen_sent = model.generate(sent, 
+                                max_length=512, 
+                                do_sample=do_sample,
+                                bad_words_ids=bad_words_ids,
+                                num_return_sequences=num_return_sequences,
+                                forced_eos_token_id=tokenizer.eos_token_id,
+                                pad_token_id=tokenizer.pad_token_id,
+                                low_memory=True if num_return_sequences > 1 else False)
+    return gen_sent.cpu().detach()
+ 
+def gen_num_sent(start, model, num_sent, bad_words=None):
+    gen_sent = [generate(sent, model, bad_words_ids=bad_words, num_return_sequences=num_sent) for sent in start]
+    gen_sent = [torch.cat([sent, torch.ones(num_sent, 512 - sent.shape[1], dtype=torch.long) * tokenizer.pad_token_id], dim=1) for sent in gen_sent]
+    gen_sent = torch.cat(gen_sent, dim=0)
+    return gen_sent
+
