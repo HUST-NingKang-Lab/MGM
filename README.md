@@ -1,6 +1,7 @@
 # MGM
 
 MGM (Microbial General Model) is a large-scaled pretrained language model for interpretable microbiome data analysis. The program is designed to help you to fine-tune and evaluate MGM to other microbiome data analysis tasks.
+![](pipeline.png)
 
 ## Installation
 
@@ -29,7 +30,7 @@ mgm construct -i infant_data/abundance.csv -o infant_corpus.pkl
 ```
 if you provide a hdf5 file, you need to specify the key of the input file using `-k` option. The default key is `genus`.
 
-- `pretrain`: Pretrain the MGM model using the microbiome corpus followed GPT style. Input: corpus constructed by `construct` mode, Output: pretrained MGM model. 
+- `pretrain`: Pretrain the MGM model using the microbiome corpus following GPT style. Input: corpus constructed by `construct` mode, Output: pretrained MGM model. 
 You can also train the generator by providing the label file in csv format with the first column as sample names, second column as labels. If you want to train the generator, you need to specify the generator model using `--with-label` option. The label tokens will be concatenated at the start of each sentence.
 By default, the pretrained model will load the pretrained weights from the general MGM model. If you want to train the model from scratch, you can use `--from-scratch` option.
 e.g.:
