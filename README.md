@@ -64,7 +64,7 @@ mgm train -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -o infant_model
 ```
 
 #### `finetune`
-Finetunes the MGM model to fit a new ontology, using labeled data and optionally a customized MGM model.
+Finetunes the MGM model to fit a new task, using labeled data and optionally a customized MGM model.
 
 **Input:** Corpus from `construct` mode, label file (csv), pretrained model (optional)  
 **Output:** Finetuned MGM model
