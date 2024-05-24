@@ -37,7 +37,7 @@ mgm construct -i infant_data/abundance.csv -o infant_corpus.pkl
 > For hdf5 files, specify the key using `-k` (default key is `genus`).
 
 #### `pretrain`
-Pretrains the MGM model using the microbiome corpus in a GPT-style manner. Optionally, you can train the generator by providing a label file.
+Pretrains the MGM model using the microbiome corpus in a GPT-style manner. Optionally, you can train the generator by providing a label file. If the label file is provided, the tokenized label will be added following the \<bos> token, meanwhile, the tokenizer will be updated and the model's embedding layer will be expanded.
 
 **Input:** Corpus from `construct` mode  
 **Output:** Pretrained MGM model
