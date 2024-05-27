@@ -91,7 +91,7 @@ mgm predict -E -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -m infant_
 Generates synthetic microbiome data using the pretrained MGM model. A prompt file is required for generating samples with specific labels.
 
 **Input:** Pretrained MGM model  
-**Output:** Synthetic microbiome data in pickle format
+**Output:** Synthetic genus tensors in pickle format
 
 **Example:**
 
