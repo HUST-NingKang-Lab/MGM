@@ -22,7 +22,7 @@ def find_pkg_resource(path):
         raise FileNotFoundError('Resource {} not found, please check'.format(path))
 
 def get_CLI_parser():
-    modes = ['construct', 'map','pretrain', 'train', 'finetune', 'predict']
+    modes = ['construct', 'map','pretrain', 'train', 'finetune', 'predict', 'generate']
     # noinspection PyTypeChecker
     parser = argparse.ArgumentParser(
         description=('MGM (Microbiao General Model) is a large-scaled pretrained language model for interpretable microbiome data analysis.\n'

@@ -44,7 +44,7 @@ class CustomUnpickler(pickle.Unpickler):
             return MicroTokenizer
         return super().find_class(module, name)
 
-def generate(sent, model, do_sample=True, bad_words_ids=None, num_return_sequences=100):
+def generate(sent, model, tokenizer, do_sample=True, bad_words_ids=None, num_return_sequences=100):
     sent = sent.to(model.device)
     gen_sent = model.generate(sent, 
                                 max_length=512, 
@@ -56,8 +56,8 @@ def generate(sent, model, do_sample=True, bad_words_ids=None, num_return_sequenc
                                 low_memory=True if num_return_sequences > 1 else False)
     return gen_sent.cpu().detach()
  
-def gen_num_sent(start, model, num_sent, bad_words=None):
-    gen_sent = [generate(sent, model, bad_words_ids=bad_words, num_return_sequences=num_sent) for sent in start]
+def gen_num_sent(start, model, num_sent, tokenizer, bad_words=None):
+    gen_sent = [generate(sent, model, tokenizer, bad_words_ids=bad_words, num_return_sequences=num_sent) for sent in start]
     gen_sent = [torch.cat([sent, torch.ones(num_sent, 512 - sent.shape[1], dtype=torch.long) * tokenizer.pad_token_id], dim=1) for sent in gen_sent]
     gen_sent = torch.cat(gen_sent, dim=0)
     return gen_sent

@@ -35,6 +35,7 @@ def generate(cfg, args):
     gen_sent = gen_num_sent(start,
                             model,
                             num_sent=args.num_samples,
+                            tokenizer=extended_tokenizer,
                             bad_words=bad_words) 
     
     dump(gen_sent, open(args.output, "wb"))
