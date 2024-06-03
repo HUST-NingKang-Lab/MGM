@@ -2,7 +2,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 # change this.
-NAME = "mgm"
+NAME = "microformer-mgm"
 AUTHOR = "Haohong Zhang"
 EMAIL = "haohongzh@gmail.com"
 URL = "https://github.com/LudensZhang/MGM"
