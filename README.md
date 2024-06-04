@@ -103,6 +103,7 @@ mgm generate -m infant_model_clf -p infant_data/prompt.txt -n 100 -o infant_synt
 Reconstruct abundance from ranked corpus.
                                         
 **Input:**  Abundance file for train reconstructor
+
 **Output:**  Reconstruct ranked corpus to abundance; Reconstructor model
 
 ```bash
