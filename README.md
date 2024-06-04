@@ -99,7 +99,7 @@ Generates synthetic microbiome data using the pretrained MGM model. A prompt fil
 mgm generate -m infant_model_clf -p infant_data/prompt.txt -n 100 -o infant_synthetic.pkl
 ```
 
-#### 'reconstruct'
+#### `reconstruct`
 Reconstruct abundance from ranked corpus.
                                         
 **Input:**  Abundance file for train reconstructor
