@@ -6,6 +6,7 @@ from mgm.src.evaluator import Evaluator
 import os
 import pickle
 from mgm.src.MicroCorpus import MicroTokenizer, MicroCorpus
+from tqdm import tqdm
 
 def seed_everything(seed: int):
     import random, os
@@ -55,10 +56,29 @@ def generate(sent, model, tokenizer, do_sample=True, bad_words_ids=None, num_ret
                                 pad_token_id=tokenizer.pad_token_id,
                                 low_memory=True if num_return_sequences > 1 else False)
     return gen_sent.cpu().detach()
- 
+
 def gen_num_sent(start, model, num_sent, tokenizer, bad_words=None):
     gen_sent = [generate(sent, model, tokenizer, bad_words_ids=bad_words, num_return_sequences=num_sent) for sent in start]
     gen_sent = [torch.cat([sent, torch.ones(num_sent, 512 - sent.shape[1], dtype=torch.long) * tokenizer.pad_token_id], dim=1) for sent in gen_sent]
     gen_sent = torch.cat(gen_sent, dim=0)
     return gen_sent
+
+def loss_bc(p_i,q_i):
+    return torch.sum(torch.abs(p_i-q_i))/torch.sum(torch.abs(p_i+q_i))
+
+def get_Z(corpus, position_encodings, vocab_size):
+    corpus = torch.cat((corpus[:, 0:1], corpus[:, 2:],
+                        torch.zeros(corpus.shape[0], 1, dtype=torch.long)), 
+                        dim=1)
+    
+    Z = torch.zeros((len(corpus), vocab_size))
+    idx = corpus
+    for i in tqdm(range(len(corpus))):
+        running_idx = idx[i][idx[i] > 3]
+        Z[i, running_idx] = 1 + position_encodings[:len(running_idx)]
+
+    return Z[:, 4:]
+
+
+
 
