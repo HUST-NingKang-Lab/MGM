@@ -99,6 +99,16 @@ Generates synthetic microbiome data using the pretrained MGM model. A prompt fil
 mgm generate -m infant_model_clf -p infant_data/prompt.txt -n 100 -o infant_synthetic.pkl
 ```
 
+#### 'reconstruct'
+Reconstruct abundance from ranked corpus.
+                                        
+**Input:**  Abundance file for train reconstructor
+**Output:**  Reconstruct ranked corpus to abundance; Reconstructor model
+
+```bash
+mgm reconstruct -a infant_data/abundance.csv -i infant_generate.pkl -g infant_model_generate -o reconstructor_file
+```
+
 For detailed usage of each mode, refer to the help message:
 
 ```bash
@@ -109,4 +119,5 @@ mgm <mode> --help
 | Name | Email | Organization |
 | ---- | ----- | ------------ |
 |Haohong Zhang|[haohongzh@gmail.com](mailto:haohongzh@gmail.com)|PhD Student, School of Life Science and Technology, Huazhong University of Science & Technology|
+|Zixin Kang| [29590kang@gmail.com](mailto:29590kang@gmail.com)| Undergrad, School of Life Science and Technology, Huazhong University of Science & Technology|
 |Kang Ning  | [ningkang@hust.edu.cn](mailto:ningkang@hust.edu.cn)       | Professor, School of Life Science and Technology, Huazhong University of Science & Technology |
