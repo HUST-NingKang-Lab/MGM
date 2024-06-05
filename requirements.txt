@@ -5,3 +5,4 @@ setuptools>=68.0.0
 torch>=2.0.1
 tqdm>=4.65.0
 transformers>=4.33.3
+lightning>=2.0.6
