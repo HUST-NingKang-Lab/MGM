@@ -117,7 +117,7 @@ def reconstruct(cfg, args):
 
     mb = pred_args["batch_size"]
     
-    gen = get_Z(ordered_corpus, position_encodings, vocab_size)
+    gen = get_Z(ordered_corpus, position_encodings, vocab_size, args.withLabel)
     gen_set = TensorDataset(gen)
     gen_loader = DataLoader(gen_set, batch_size=mb)
     

@@ -108,7 +108,7 @@ def get_CLI_parser():
                         help='The path to csv abundance.')
     reconstruct.add_argument('-r', '--reconModel', type=str, default=None,
                         help='The path to ckpt reconstructor model.')
-    reconstruct.add_argument('-w', '--withLabel', type=bool, default=True,
+    reconstruct.add_argument('-w', '--withLabel', type=bool, default=False,
                         help='If there are labels in ranked corpus.')
     reconstruct.add_argument('-g', '--generator', type=str, default=None,
                         help='The path to generator.')

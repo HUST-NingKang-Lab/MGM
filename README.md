@@ -109,12 +109,13 @@ mgm generate -m infant_model_clf -p infant_data/prompt.txt -n 100 -o infant_synt
 #### `reconstruct`
 Reconstruct abundance from ranked corpus. 
                                         
-**Input:**  Abundance file for train reconstructor
+**Input:**  Abundance file for train reconstructor or trained model in ckpt; Ranked corpus for reconstruct; Get label's tokenizer in generator if there is; Prompt if there is label in corpus
 
-**Output:**  Reconstruct ranked corpus to abundance; Reconstructor model
+**Output:**  Reconstructed corpus ; Reconstructor model; Decoded label
 
 ```bash
-mgm reconstruct -a infant_data/abundance.csv -i infant_synthetic.pkl -g infant_model_gen -o reconstructor_file
+mgm reconstruct -a infant_data/abundance.csv -i infant_generate.pkl -g infant_model_generate -w True -o reconstructor_file 
+mgm reconstruct -r reconstructor_file/reconstructor_model.ckpt -i infant_generate.pkl -g infant_model_generate -w True -o reconstructor_file 
 ```
 
 For detailed usage of each mode, refer to the help message:
