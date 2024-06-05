@@ -6,6 +6,13 @@
 
 ## Installation
 
+### By pip
+
+```bash
+pip install microformer-mgm
+```
+
+### By source
 Install the MGM package using `setup.py`:
 
 ```bash
