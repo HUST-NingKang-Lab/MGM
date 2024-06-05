@@ -128,5 +128,5 @@ mgm <mode> --help
 | Name | Email | Organization |
 | ---- | ----- | ------------ |
 |Haohong Zhang|[haohongzh@gmail.com](mailto:haohongzh@gmail.com)|PhD Student, School of Life Science and Technology, Huazhong University of Science & Technology|
-|Zixin Kang| [29590kang@gmail.com](mailto:29590kang@gmail.com)| Undergrad, School of Life Science and Technology, Huazhong University of Science & Technology|
+|Zixin Kang| [29590kang@gmail.com](mailto:29590kang@gmail.com)| Undergraduate, School of Life Science and Technology, Huazhong University of Science & Technology|
 |Kang Ning  | [ningkang@hust.edu.cn](mailto:ningkang@hust.edu.cn)       | Professor, School of Life Science and Technology, Huazhong University of Science & Technology |
