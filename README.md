@@ -107,14 +107,14 @@ mgm generate -m infant_model_clf -p infant_data/prompt.txt -n 100 -o infant_synt
 ```
 
 #### `reconstruct`
-Reconstruct abundance from ranked corpus.
+Reconstruct abundance from ranked corpus. 
                                         
 **Input:**  Abundance file for train reconstructor
 
 **Output:**  Reconstruct ranked corpus to abundance; Reconstructor model
 
 ```bash
-mgm reconstruct -a infant_data/abundance.csv -i infant_generate.pkl -g infant_model_generate -o reconstructor_file
+mgm reconstruct -a infant_data/abundance.csv -i infant_synthetic.pkl -g infant_model_gen -o reconstructor_file
 ```
 
 For detailed usage of each mode, refer to the help message:
