@@ -55,7 +55,7 @@ def reconstruct(cfg, args):
         P_train = abundance
         P_train = torch.tensor(P_train.values)
         Z_train = corpus.data
-        Z_train = get_Z(Z_train, position_encodings, vocab_size)
+        Z_train = get_Z(Z_train, position_encodings, vocab_size, label=args.withLabel)
 
         del corpus
 

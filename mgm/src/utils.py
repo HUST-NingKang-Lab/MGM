@@ -66,7 +66,7 @@ def gen_num_sent(start, model, num_sent, tokenizer, bad_words=None):
 def loss_bc(p_i,q_i):
     return torch.sum(torch.abs(p_i-q_i))/torch.sum(torch.abs(p_i+q_i))
 
-def get_Z(corpus, position_encodings, vocab_size, label):
+def get_Z(corpus, position_encodings, vocab_size, label=True):
     
     if label:
         corpus = torch.cat((corpus[:, 0:1], corpus[:, 2:],

@@ -103,7 +103,7 @@ Generates synthetic microbiome data using the pretrained MGM model. A prompt fil
 **Example:**
 
 ```bash
-mgm generate -m infant_model_clf -p infant_data/prompt.txt -n 100 -o infant_synthetic.pkl
+mgm generate -m infant_model_gen -p infant_data/prompt.txt -n 100 -o infant_synthetic.pkl
 ```
 
 #### `reconstruct`
@@ -114,8 +114,8 @@ Reconstruct abundance from ranked corpus.
 **Output:**  Reconstructed corpus ; Reconstructor model; Decoded label
 
 ```bash
-mgm reconstruct -a infant_data/abundance.csv -i infant_generate.pkl -g infant_model_generate -w True -o reconstructor_file 
-mgm reconstruct -r reconstructor_file/reconstructor_model.ckpt -i infant_generate.pkl -g infant_model_generate -w True -o reconstructor_file 
+mgm reconstruct -a infant_data/abundance.csv -i infant_synthetic.pkl -g infant_model_generate -w True -o reconstructor_file 
+mgm reconstruct -r reconstructor_file/reconstructor_model.ckpt -i infant_synthetic.pkl -g infant_model_generate -w True -o reconstructor_file 
 ```
 
 For detailed usage of each mode, refer to the help message:

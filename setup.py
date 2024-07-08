@@ -5,7 +5,7 @@ from setuptools import find_packages
 NAME = "microformer-mgm"
 AUTHOR = "Haohong Zhang"
 EMAIL = "haohongzh@gmail.com"
-URL = "https://github.com/LudensZhang/MGM"
+URL = "https://github.com/HUST-NingKang-Lab/MGM"
 LICENSE = "MIT"
 DESCRIPTION = "MGM (Microbial General Model) as a large-scaled pretrained language model for interpretable microbiome data analysis."
 
@@ -13,7 +13,7 @@ DESCRIPTION = "MGM (Microbial General Model) as a large-scaled pretrained langua
 if __name__ == "__main__":
     setup( 
         name=NAME,
-        version="0.5.5",
+        version="0.5.6",
         author=AUTHOR,
         author_email=EMAIL,
         url=URL,
