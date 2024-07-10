@@ -13,7 +13,7 @@ DESCRIPTION = "MGM (Microbial General Model) as a large-scaled pretrained langua
 if __name__ == "__main__":
     setup( 
         name=NAME,
-        version="0.5.6",
+        version="0.5.7",
         author=AUTHOR,
         author_email=EMAIL,
         url=URL,

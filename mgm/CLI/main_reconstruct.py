@@ -128,9 +128,9 @@ def reconstruct(cfg, args):
         pred.append(p_pred)
     
     pred = torch.cat(pred, 0)
-    pred = pred / pred.mean(dim=1, keepdim=True)
+    pred = pred / pred.sum(dim=1, keepdim=True)
     pred = pred.detach().cpu().numpy()
-    pd.DataFrame(pred).to_csv(os.path.join(args.output,'reconstructed_abundance.csv'), index=False)
+    pd.DataFrame(pred, columns=list(tokenizer.vocab.keys())[4:]).to_csv(os.path.join(args.output,'reconstructed_abundance.csv'), index=False)
     
     
 
