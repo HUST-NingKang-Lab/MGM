@@ -44,7 +44,7 @@ mgm construct -i infant_data/abundance.csv -o infant_corpus.pkl
 > For hdf5 files, specify the key using `-k` (default key is `genus`).
 
 #### `pretrain`
-Pretrains the MGM model using the microbiome corpus in a GPT-style manner. Optionally, you can train the generator by providing a label file. If the label file is provided, the tokenized label will be added following the \<bos> token, meanwhile, the tokenizer will be updated and the model's embedding layer will be expanded.
+Pretrains the MGM model using the microbiome corpus by causal language modeling. Optionally, you can train the generator by providing a label file. If the label file is provided, the tokenized label will be added following the \<bos> token, meanwhile, the tokenizer will be updated and the model's embedding layer will be expanded.
 
 **Input:** Corpus from `construct` mode  
 **Output:** Pretrained MGM model
@@ -59,7 +59,7 @@ mgm pretrain -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -o infant_mo
 > Use `--from-scratch` to train the model from scratch instead of loading pretrained weights.
 
 #### `train`
-Trains a supervised MGM model without mask pretrained weights, requiring labeled data.
+Trains a supervised MGM model from sratch, requiring labeled data.
 
 **Input:** Corpus from `construct` mode, label file (csv)  
 **Output:** Supervised MGM model
@@ -71,7 +71,7 @@ mgm train -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -o infant_model
 ```
 
 #### `finetune`
-Finetunes the MGM model to fit a new task, using labeled data and optionally a customized MGM model.
+Finetunes the MGM model with pre-trained weight to fit a new task, using labeled data and optionally a customized MGM model.
 
 **Input:** Corpus from `construct` mode, label file (csv), pretrained model (optional)  
 **Output:** Finetuned MGM model
@@ -83,7 +83,7 @@ mgm finetune -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -m infant_mo
 ```
 
 #### `predict`
-Predicts labels of input data using the expert model. If a label file is provided, prediction results will be compared with the ground truth using various metrics.
+Predicts labels of input data using a fine-tuned MGM model. If a label file is provided, prediction results will be compared with the ground truth using various metrics.
 
 **Input:** Corpus from `construct` mode, label file (optional), supervised MGM model  
 **Output:** Prediction results in csv format
