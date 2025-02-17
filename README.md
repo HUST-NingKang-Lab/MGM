@@ -1,4 +1,8 @@
 # MGM
+[![](https://img.shields.io/badge/PyPI-v0.3-blue?style=flat)](https://pypi.org/project/microformer-mgm/) 
+[![Downloads](https://pepy.tech/badge/microformer-mgm)](https://pepy.tech/project/microformer-mgm)
+![](https://img.shields.io/badge/status-beta-yellow?style=flat) 
+![](https://img.shields.io/github/license/HUST-NingKang-Lab/MGM?style=flat) 
 
 **Microbial General Model (MGM)** is a large-scale pretrained language model designed for interpretable microbiome data analysis. MGM allows for fine-tuning and evaluation across various microbiome data analysis tasks.
 
