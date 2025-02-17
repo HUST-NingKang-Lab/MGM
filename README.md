@@ -75,7 +75,8 @@ mgm train -i infant_corpus.pkl -l infant_data/meta_withbirth.csv -o infant_model
 ```
 
 #### `finetune`
-Finetunes the MGM model with pre-trained weight to fit a new task, using labeled data and optionally a customized MGM model.
+Finetunes the MGM model with pre-trained weight to fit a new task, using labeled data and optionally a customized MGM model. If no model is specified, the model pretrained on MicroCorpus-260K will be used.
+
 
 **Input:** Corpus from `construct` mode, label file (csv), pretrained model (optional)  
 **Output:** Finetuned MGM model
