@@ -77,7 +77,7 @@ def reconstruct(cfg, args):
 
         N = Z_train.shape[1]
         model = reconstructorNet(N, lr)
-        callbacks = [EarlyStopping(monitor='val_loss', patience=10)]
+        callbacks = [EarlyStopping(monitor='val_loss', patience=3)]
 
         # Training and save model
         grad_clip_val = 1.0 

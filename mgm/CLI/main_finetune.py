@@ -72,10 +72,10 @@ def finetune(cfg, args):
     model = model.train()
 
     split = args.val_split
-
-    train_set, val_set = random_split(
-        dataset, [int(len(corpus) * (1 - split)), int(len(corpus) * split)]
-    )
+    
+    train_size = int(len(corpus) * (1 - split))  
+    val_size = len(corpus) - train_size  # Ensures the sum matches the dataset length  
+    train_set, val_set = random_split(dataset, [train_size, val_size])  
 
     callbacks = [EarlyStoppingCallback(early_stopping_patience=10)]
 
